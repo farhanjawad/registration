@@ -35,7 +35,7 @@ export default function LandingPage() {
             </div>
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight text-[#fdfbf7]">
             রাসূলে আরাবি (সা.) 
-              <br /> <span className="text-amber-400"> এক মহাজীবনের মহাকাব্য পাঠ</span>
+              <br /> <span className="text-2xl text-amber-400"> এক মহাজীবনের মহাকাব্য পাঠ</span>
             </h1>
             <p className="text-emerald-100 text-lg lg:text-2xl max-w-lg leading-relaxed">
               নবী মুহাম্মদ ﷺ এর বরকতময় জীবন জানার এই যাত্রায় যোগ দিন। শিক্ষার্থী এবং শিক্ষকদের উভয়ে অংশগ্রহণ করতে পারবেন।
