@@ -38,7 +38,7 @@ export default function LandingPage() {
               <br /> <span className="text-amber-400"> এক মহাজীবনের মহাকাব্য পাঠ</span>
             </h1>
             <p className="text-emerald-100 text-lg lg:text-2xl max-w-lg leading-relaxed">
-              নবী মুহাম্মদ (সাঃ) এর বরকতময় জীবন জানার এই যাত্রায় যোগ দিন। শিক্ষার্থী এবং শিক্ষকদের উভয়ে অংশগ্রহণ করতে পারবেন।
+              নবী মুহাম্মদ ﷺ এর বরকতময় জীবন জানার এই যাত্রায় যোগ দিন। শিক্ষার্থী এবং শিক্ষকদের উভয়ে অংশগ্রহণ করতে পারবেন।
             </p>
             <div className="flex gap-4 pt-4 text-lg">
               <div className="flex items-center gap-2 text-emerald-200"><Users size={20} className="text-amber-400" /> সবার জন্য উন্মুক্ত</div>
@@ -53,7 +53,7 @@ export default function LandingPage() {
                 <BookOpen size={40} className="text-emerald-800" />
               </div>
               <h3 className="text-2xl font-bold text-emerald-900 mb-2">রেজিস্ট্রেশান পোর্টাল</h3>
-              <p className="text-emerald-700 mb-8 text-base">আসন্ন প্রোগ্রামের জন্য আপনার আসন নিশ্চিত করুন এবং কোর্সের বই সংগ্রহ করুন।</p>
+              <p className="text-emerald-700 mb-8 text-base">আসন্ন প্রোগ্রামের জন্য আপনার আসন নিশ্চিত করুন এবং বই সংগ্রহ করুন।</p>
               <Link
                 href="/register"
                 className="w-full bg-amber-500 hover:bg-amber-400 text-emerald-950 font-bold py-3 rounded-xl flex justify-center items-center gap-2 transition-all shadow-lg font-sans text-lg"
@@ -82,7 +82,7 @@ export default function LandingPage() {
               </div>
 
               <h3 className="text-3xl lg:text-5xl font-extrabold text-emerald-900 mb-6 tracking-tight">
-               রাসূলে আরাবি (সা.) </h3>
+               রাসূলে আরাবি ﷺ </h3>
 
               <div className="space-y-5 text-emerald-800/90 text-xl leading-relaxed">
                 <p>
@@ -134,7 +134,7 @@ export default function LandingPage() {
 
             return (
               <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-emerald-100 hover:shadow-md transition-shadow group flex flex-col items-center text-center">
-                <div className="text-5xl font-light text-emerald-200 mb-4 group-hover:text-amber-300 transition-colors font-sans">
+                <div className="text-5xl font-light text-emerald-200 mb-4 group-hover:text-amber-300 transition-colors font-kalpurush">
                 অধ্যায়  {bengaliNum}
                 </div>
                 <h4 className="text-2xl font-bold text-emerald-900">{chapter}</h4>
