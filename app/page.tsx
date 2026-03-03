@@ -116,17 +116,18 @@ export default function LandingPage() {
       {/* Chapters Section */}
       <section className="pb-20 pt-10 px-6 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl lg:text-4xl font-bold text-emerald-900 mb-4">সিলেবাসের হাইলাইটস</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold text-emerald-900 mb-4">অধ্যায়ের শিরোনাম</h2>
           <div className="w-24 h-1 bg-amber-400 mx-auto rounded-full"></div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
-            "প্রাক-ইসলামী যুগ",
-            "জন্ম ও শৈশব",
-            "প্রথম ওহী",
+            "মুহাম্মাদ ﷺ-এর বেড়ে ওঠা, বংশ-পরিচয় ও নুবুওয়াতের পূর্বের ঘটনাগুলোক-নবী যুগ",
+            "নুবুওয়াত-প্রাপ্তি, আল্লাহর প্রতি আহ্বান ও আপতিত নিপীড়ন-নির্যাতন",
             "মদিনায় হিজরত",
-            "সমাজ প্রতিষ্ঠা",
-            "বিদায় হজ্জ"
+            "সামরিক অভিযান (গযওয়া ও সারিয়্যাহ)",            
+            "ফরজ হজ্জের বিধান (৯ম হিজরি) বিদায় হজ্জ (১০ম হিজরি)",
+            "সুউচ্চ বন্ধুর পানে নবী ﷺ-এর যাত্রা",
+            "নবিজীর পরিবার, গুণ ও আখলাকের বিবরণ"
           ].map((chapter, i) => {
             // Convert to a 2-digit format (01, 02) then transform to Bengali (০১, ০২)
             const chapterNum = (i + 1).toString().padStart(2, '0');
@@ -135,7 +136,7 @@ export default function LandingPage() {
             return (
               <div key={i} className="bg-white p-8 rounded-2xl shadow-sm border border-emerald-100 hover:shadow-md transition-shadow group flex flex-col items-center text-center">
                 <div className="text-5xl font-light text-emerald-200 mb-4 group-hover:text-amber-300 transition-colors font-sans">
-                  {bengaliNum}
+                অধ্যায়  {bengaliNum}
                 </div>
                 <h4 className="text-2xl font-bold text-emerald-900">{chapter}</h4>
               </div>
@@ -143,6 +144,12 @@ export default function LandingPage() {
           })}
         </div>
       </section>
+    
+     {/* Footer */}
+      <footer className="w-full text-center py-8 text-slate-500 text-sm">
+        <p>© {new Date().getFullYear()} KUDC Exam Management System. Dedicated to Preserving Knowledge.</p>
+      </footer>
     </div>
+
   );
 }
