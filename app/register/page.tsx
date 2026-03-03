@@ -114,7 +114,7 @@ export default function RegisterPage() {
                 <BookOpen size={40} className="text-amber-400" />
               </div>
               <h2 className="text-4xl font-extrabold text-white tracking-tight mb-2">প্রোগ্রাম নিবন্ধন</h2>
-              <p className="text-emerald-100 text-xl font-medium">রাসূল-ই-আরবী কোর্সে আপনার আসন নিশ্চিত করুন</p>
+              <p className="text-emerald-100 text-xl font-medium">রাসূলে-আরাবি সীরাহ পাঠ অলিম্পিয়াডে আপনার আসন নিশ্চিত করুন</p>
             </div>
           </div>
 
@@ -219,7 +219,7 @@ export default function RegisterPage() {
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <Hash className="h-5 w-5 text-emerald-600/50 group-focus-within:text-amber-500 transition-colors" />
                       </div>
-                      <input {...register("studentId")} className="w-full pl-12 pr-4 py-3.5 bg-white border border-emerald-200 rounded-2xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all outline-none text-emerald-900 shadow-sm font-sans" placeholder="e.g. 190200" />
+                      <input {...register("studentId")} className="w-full pl-12 pr-4 py-3.5 bg-white border border-emerald-200 rounded-2xl focus:ring-2 focus:ring-amber-400 focus:border-amber-400 transition-all outline-none text-emerald-900 shadow-sm font-sans" placeholder="e.g. 240201" />
                     </div>
                     {errors.studentId && <p className="text-red-500 text-sm mt-1 ml-1">{errors.studentId.message}</p>}
                   </div>
@@ -245,16 +245,16 @@ export default function RegisterPage() {
                 <BookOpen className="text-amber-600" size={24}/> নির্ধারিত বই 
               </h3>
               
-              <label className="block text-amber-900 font-medium mb-4 text-lg">আপনি কি "রাসূল-ই-আরবী" বইটির হার্ডকপি কিনতে চান? (১০০ টাকা)</label>
+              <label className="block text-amber-900 font-medium mb-4 text-lg">আপনি কি "রাসূল-ই-আরবী ﷺ" বইটির হার্ডকপি কিনতে চান? </label>
               
               <div className="space-y-3 mb-6 text-lg">
                 <label className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all ${buyBook === 'হ্যাঁ' ? 'bg-white border-amber-400 shadow-md ring-1 ring-amber-400' : 'bg-white/50 border-amber-200 hover:bg-white'}`}>
                   <input type="radio" value="হ্যাঁ" {...register("buyBook")} className="w-5 h-5 text-amber-600 focus:ring-amber-500 border-amber-300" />
-                  <span className="ml-3 text-amber-900 font-medium">হ্যাঁ, আমি বইটি নিতে চাই (১০০ টাকা)</span>
+                  <span className="ml-3 text-amber-900 font-medium">হ্যাঁ, আমি বইটি নিতে চাই</span>
                 </label>
                 <label className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all ${buyBook === 'না' ? 'bg-white border-gray-400 shadow-md ring-1 ring-gray-400' : 'bg-white/50 border-amber-200 hover:bg-white'}`}>
                   <input type="radio" value="না" {...register("buyBook")} className="w-5 h-5 text-emerald-600 focus:ring-emerald-500 border-amber-300" />
-                  <span className="ml-3 text-amber-900 font-medium">না, আমার প্রয়োজন নেই</span>
+                  <span className="ml-3 text-amber-900 font-medium">না, আমার কাছে আছে</span>
                 </label>
               </div>
               {errors.buyBook && <p className="text-red-500 text-sm mb-4">{errors.buyBook.message}</p>}
@@ -265,7 +265,7 @@ export default function RegisterPage() {
                   <div className="flex items-start gap-4 mb-4">
                     <div className="bg-amber-100 p-2 rounded-lg text-amber-700 mt-1"><CreditCard size={20}/></div>
                     <p className="text-lg text-amber-800 leading-relaxed">
-                      অনুগ্রহ করে <strong>১০০ টাকা</strong> বিকাশ বা নগদে <strong className="bg-amber-100 px-2 py-0.5 rounded font-sans">01XXXXXXXXX</strong> (পার্সোনাল) নম্বরে পাঠান। পাঠানোর পর নিচের ঘরে আপনার ট্রানজেকশন আইডি (TrxID) দিন।
+                      অনুগ্রহ করে <strong>১০০ টাকা</strong> বিকাশ বা নগদে <strong className="bg-amber-100 px-2 py-0.5 rounded font-sans">01744302744</strong> (পার্সোনাল) নম্বরে পাঠান। পাঠানোর পর নিচের ঘরে আপনার ট্রানজেকশন আইডি (TrxID) দিন।
                     </p>
                   </div>
                   
