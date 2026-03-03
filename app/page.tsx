@@ -34,8 +34,8 @@ export default function LandingPage() {
               খুলনা বিশ্ববিদ্যালয় সীরাত অলিম্পিয়াড - ২০২৬
             </div>
             <h1 className="text-5xl lg:text-7xl font-bold leading-tight text-[#fdfbf7]">
-              এক মহাজীবনের মহাকাব্য পাঠ
-              <br /> <span className="text-amber-400">রাসূল-ই-আরবী (সাঃ)</span>
+            রাসূলে আরাবি (সা.) 
+              <br /> <span className="text-amber-400"> এক মহাজীবনের মহাকাব্য পাঠ</span>
             </h1>
             <p className="text-emerald-100 text-lg lg:text-2xl max-w-lg leading-relaxed">
               নবী মুহাম্মদ (সাঃ) এর বরকতময় জীবন জানার এই যাত্রায় যোগ দিন। শিক্ষার্থী এবং শিক্ষকদের উভয়ে অংশগ্রহণ করতে পারবেন।
@@ -82,8 +82,7 @@ export default function LandingPage() {
               </div>
 
               <h3 className="text-3xl lg:text-5xl font-extrabold text-emerald-900 mb-6 tracking-tight">
-                রাসূল-ই-আরবী
-              </h3>
+               রাসূলে আরাবি (সা.) </h3>
 
               <div className="space-y-5 text-emerald-800/90 text-xl leading-relaxed">
                 <p>
@@ -121,7 +120,7 @@ export default function LandingPage() {
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {[
-            "মুহাম্মাদ ﷺ-এর বেড়ে ওঠা, বংশ-পরিচয় ও নুবুওয়াতের পূর্বের ঘটনাগুলোক-নবী যুগ",
+            "মুহাম্মাদ ﷺ-এর বেড়ে ওঠা, বংশ-পরিচয় ও নুবুওয়াতের পূর্বের ঘটনাগুলো",
             "নুবুওয়াত-প্রাপ্তি, আল্লাহর প্রতি আহ্বান ও আপতিত নিপীড়ন-নির্যাতন",
             "মদিনায় হিজরত",
             "সামরিক অভিযান (গযওয়া ও সারিয়্যাহ)",            
