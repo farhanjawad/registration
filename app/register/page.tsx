@@ -113,7 +113,7 @@ export default function RegisterPage() {
               <div className="bg-amber-400/20 p-4 rounded-full mb-4 backdrop-blur-sm border border-amber-400/30">
                 <BookOpen size={40} className="text-amber-400" />
               </div>
-              <h2 className="text-4xl font-extrabold text-white tracking-tight mb-2">প্রোগ্রাম নিবন্ধন</h2>
+              <h2 className="text-4xl font-extrabold text-white tracking-tight mb-2"> নিবন্ধন</h2>
               <p className="text-emerald-100 text-xl font-medium">রাসূলে-আরাবি সীরাহ পাঠ অলিম্পিয়াডে আপনার আসন নিশ্চিত করুন</p>
             </div>
           </div>
@@ -265,12 +265,12 @@ export default function RegisterPage() {
                   <div className="flex items-start gap-4 mb-4">
                     <div className="bg-amber-100 p-2 rounded-lg text-amber-700 mt-1"><CreditCard size={20}/></div>
                     <p className="text-lg text-amber-800 leading-relaxed">
-                      অনুগ্রহ করে <strong>১০০ টাকা</strong> বিকাশ বা নগদে <strong className="bg-amber-100 px-2 py-0.5 rounded font-sans">01744302744</strong> (পার্সোনাল) নম্বরে পাঠান। পাঠানোর পর নিচের ঘরে আপনার ট্রানজেকশন আইডি (TrxID) দিন।
+                      অনুগ্রহ করে <strong>১০০ টাকা</strong> আমাদের প্রতিনিধি ভাই অথবা বিকাশ বা নগদে <strong className="bg-amber-100 px-2 py-0.5 rounded font-sans">01744302744</strong> (পার্সোনাল) নম্বরে পাঠান। পাঠানোর পর নিচের ঘরে যে ভাইকে টাকা দিয়েছেন অথবা আপনার ট্রানজেকশন আইডি (TrxID) দিন।
                     </p>
                   </div>
                   
                   <div className="relative group text-lg">
-                    <label className="block text-amber-900 font-semibold mb-2 ml-1">ট্রানজেকশন আইডি (TrxID)</label>
+                    <label className="block text-amber-900 font-semibold mb-2 ml-1">ভাইয়ের নাম অথবা ট্রানজেকশন আইডি (TrxID)</label>
                     <div className="relative">
                       <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                         <Hash className="h-5 w-5 text-amber-500/50 group-focus-within:text-amber-600 transition-colors" />
