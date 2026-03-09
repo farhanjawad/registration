@@ -8,7 +8,7 @@ import { auth, db } from "@/lib/firebase";
 import { Loader2, LogOut, ArrowUpDown, Download, CheckCircle, Search, BookOpen } from "lucide-react";
 
 // Add your main admin email(s) here. Anyone else who logs in will be treated as "Staff".
-const ADMIN_EMAILS = ["230540@ku.ac.bd"];
+const ADMIN_EMAILS = ["230540@ku.ac.bd", "harun.ku17@gmail.com"];
 
 type RegistrationData = {
   id: string;
