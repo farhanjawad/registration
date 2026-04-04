@@ -4,23 +4,24 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { collection, addDoc, serverTimestamp } from "firebase/firestore";
+import { collection, addDoc, serverTimestamp, query, where, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
-import { 
-  CheckCircle2, Loader2, ArrowLeft, User, Mail, Phone, 
+import {
+  CheckCircle2, Loader2, ArrowLeft, User, Mail, Phone,
   BookOpen, GraduationCap, Briefcase, Hash, CreditCard, Library
 } from "lucide-react";
+import toast from "react-hot-toast";
 import Link from "next/link";
 
 const DISCIPLINES = [
-  'Architecture', 'Computer Science and Engineering', 'Electronics and Communication Engineering', 
+  'Architecture', 'Computer Science and Engineering', 'Electronics and Communication Engineering',
   'Urban and Rural Planning', 'Mathematics', 'Physics', 'Chemistry', 'Statistics',
-  'Forestry and Wood Technology', 'Fisheries and Marine Resource Technology', 
+  'Forestry and Wood Technology', 'Fisheries and Marine Resource Technology',
   'Biotechnology and Genetic Engineering', 'Agrotechnology', 'Pharmacy', 'Environmental Science',
-  'Business Administration', 'Human Resource Management', 
-  'Economics', 'Sociology', 'Development Studies', 'Mass Communication and Journalism', 
-  'English', 'History and Civilization', 'Law', 
-  'Drawing and Painting', 'Printmaking', 'Sculpture', 'Other'
+  'Business Administration', 'Human Resource Management',
+  'Economics', 'Sociology', 'Development Studies', 'Mass Communication and Journalism',
+  'English', 'History and Civilization', 'Law',
+  'Drawing and Painting', 'Printmaking', 'Sculpture', 'Soil, Water and Environment', 'Education', 'Other'
 ];
 
 // Zod Schema with Bangla Error Messages
@@ -63,11 +64,41 @@ export default function RegisterPage() {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
-      await addDoc(collection(db, "registrations"), {
+      const registrationsRef = collection(db, "registrations");
+
+      const emailQuery = query(registrationsRef, where("email", "==", data.email));
+      const emailSnapshot = await getDocs(emailQuery);
+      if (!emailSnapshot.empty) {
+        toast.error("এই ইমেইল ঠিকানা দিয়ে ইতোমধ্যে একটি নিবন্ধন করা হয়েছে। (This email is already registered.)");
+        setIsSubmitting(false);
+        return; // Stop the process
+      }
+
+      // 2. Check if Student ID already exists
+      const StudentIDQuery = query(registrationsRef, where("studentId", "==", data.studentId));
+      const studentIdSnapshot = await getDocs(StudentIDQuery);
+      if (!studentIdSnapshot.empty) {
+       toast.error("এই শিক্ষার্থী আইডি দিয়ে ইতোমধ্যে একটি নিবন্ধন করা হয়েছে। (This student ID is already registered.)");
+        setIsSubmitting(false);
+        return; // Stop the process
+      }
+
+      if (data.buyBook === "হ্যাঁ" && data.trxId) {
+        const trxQuery = query(registrationsRef, where("trxId", "==", data.trxId));
+        const trxSnapshot = await getDocs(trxQuery);
+        if (!trxSnapshot.empty) {
+         toast.error("এই ট্রানজেকশন আইডি (TrxID) ইতোমধ্যে ব্যবহৃত হয়েছে! (This TrxID has already been used.)");
+          setIsSubmitting(false);
+          return; // Stop the process
+        }
+      }
+
+      await addDoc(registrationsRef, {
         ...data,
         status: "pending",
         createdAt: serverTimestamp(),
       });
+
       setSuccessData({ name: data.fullName, gender: data.gender });
     } catch (error) {
       console.error("Error submitting form:", error);
@@ -76,7 +107,7 @@ export default function RegisterPage() {
       setIsSubmitting(false);
     }
   };
-
+  
   if (successData) {
     const title = successData.gender === "পুরুষ" ? "ভাই" : "বোন";
     return (
@@ -84,7 +115,7 @@ export default function RegisterPage() {
         <div className="bg-white/90 backdrop-blur-xl p-12 rounded-[2.5rem] shadow-2xl max-w-lg w-full text-center border border-white/20 relative overflow-hidden">
           <div className="absolute top-0 left-0 w-full h-3 bg-linear-to-r from-emerald-600 to-amber-400"></div>
           <CheckCircle2 className="w-24 h-24 text-emerald-500 mx-auto mb-8 animate-in zoom-in duration-500" />
-          <h2 className="text-4xl font-extrabold text-emerald-900 mb-4 tracking-tight">নিবন্ধন<br/>সফল হয়েছে!</h2>
+          <h2 className="text-4xl font-extrabold text-emerald-900 mb-4 tracking-tight">নিবন্ধন<br />সফল হয়েছে!</h2>
           <p className="text-emerald-700 text-xl mb-10 leading-relaxed">
             জাযাকাল্লাহু খাইরান, {title} <strong className="text-emerald-900">{successData.name}</strong>। আল্লাহ জ্ঞান অন্বেষণে আপনার এই যাত্রাকে বরকতময় করুন।
           </p>
@@ -104,9 +135,9 @@ export default function RegisterPage() {
         <Link href="/" className="inline-flex items-center text-emerald-700 hover:text-emerald-900 mb-8 font-semibold bg-white/50 px-4 py-2 rounded-full backdrop-blur-sm shadow-sm transition-all hover:shadow font-sans">
           <ArrowLeft size={18} className="mr-2" /> মূল পাতা
         </Link>
-        
+
         <div className="bg-white rounded-4xl shadow-2xl shadow-emerald-900/10 overflow-hidden border border-emerald-50">
-          
+
           <div className="relative bg-linear-to-br from-emerald-900 via-emerald-800 to-emerald-950 p-12 text-center rounded-b-[3rem] shadow-inner">
             <div className="absolute inset-0 opacity-10" style={{ backgroundImage: "radial-gradient(#fbbf24 2px, transparent 2px)", backgroundSize: "30px 30px" }}></div>
             <div className="relative z-10 flex flex-col items-center">
@@ -119,13 +150,13 @@ export default function RegisterPage() {
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="p-8 sm:p-12 space-y-10">
-            
+
             {/* Section 1: Personal Details */}
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-emerald-900 border-b-2 border-emerald-100 pb-2 flex items-center gap-2">
-                <User className="text-amber-500" size={24}/> ব্যক্তিগত তথ্য
+                <User className="text-amber-500" size={24} /> ব্যক্তিগত তথ্য
               </h3>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-lg">
                 <div className="relative group">
                   <label className="block text-emerald-900 font-semibold mb-2 ml-1">আপনার পুরো নাম</label>
@@ -175,7 +206,7 @@ export default function RegisterPage() {
             {/* Section 2: Academic Details */}
             <div className="space-y-6">
               <h3 className="text-2xl font-bold text-emerald-900 border-b-2 border-emerald-100 pb-2 flex items-center gap-2">
-                <Library className="text-amber-500" size={24}/> একাডেমিক তথ্য
+                <Library className="text-amber-500" size={24} /> একাডেমিক তথ্য
               </h3>
 
               <div className="relative group text-lg">
@@ -190,7 +221,7 @@ export default function RegisterPage() {
               <div>
                 <label className="block text-emerald-900 font-semibold mb-4 text-lg ml-1">আমি নিবন্ধন করছি একজন:</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  
+
                   <label className={`relative flex flex-col items-center p-6 border-2 rounded-2xl cursor-pointer transition-all duration-300 ${userType === 'শিক্ষার্থী' ? 'border-amber-500 bg-amber-50 shadow-lg shadow-amber-500/10 scale-[1.02]' : 'border-emerald-100 bg-white hover:border-emerald-300 hover:bg-emerald-50/50'}`}>
                     <input type="radio" value="শিক্ষার্থী" {...register("userType")} className="sr-only" />
                     <div className={`p-3 rounded-full mb-3 ${userType === 'শিক্ষার্থী' ? 'bg-amber-400 text-emerald-900' : 'bg-emerald-100 text-emerald-600'}`}>
@@ -242,11 +273,11 @@ export default function RegisterPage() {
             {/* Section 3: Book Purchase */}
             <div className="bg-linear-to-br from-amber-50 to-orange-50 p-8 rounded-3xl border border-amber-200 shadow-inner">
               <h3 className="text-2xl font-bold text-amber-900 mb-6 flex items-center gap-2">
-                <BookOpen className="text-amber-600" size={24}/> নির্ধারিত বই 
+                <BookOpen className="text-amber-600" size={24} /> নির্ধারিত বই
               </h3>
-              
+
               <label className="block text-amber-900 font-medium mb-4 text-lg">আপনি কি "রাসূল-ই-আরবী ﷺ" বইটির হার্ডকপি কিনতে চান? </label>
-              
+
               <div className="space-y-3 mb-6 text-lg">
                 <label className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all ${buyBook === 'হ্যাঁ' ? 'bg-white border-amber-400 shadow-md ring-1 ring-amber-400' : 'bg-white/50 border-amber-200 hover:bg-white'}`}>
                   <input type="radio" value="হ্যাঁ" {...register("buyBook")} className="w-5 h-5 text-amber-600 focus:ring-amber-500 border-amber-300" />
@@ -263,12 +294,12 @@ export default function RegisterPage() {
               {buyBook === "হ্যাঁ" && (
                 <div className="bg-white p-6 rounded-2xl border border-amber-200 shadow-sm animate-in fade-in slide-in-from-top-4">
                   <div className="flex items-start gap-4 mb-4">
-                    <div className="bg-amber-100 p-2 rounded-lg text-amber-700 mt-1"><CreditCard size={20}/></div>
+                    <div className="bg-amber-100 p-2 rounded-lg text-amber-700 mt-1"><CreditCard size={20} /></div>
                     <p className="text-lg text-amber-800 leading-relaxed">
                       অনুগ্রহ করে <strong>১০০ টাকা</strong> আমাদের প্রতিনিধি ভাই অথবা বিকাশ বা নগদে <strong className="bg-amber-100 px-2 py-0.5 rounded font-sans">01744302744</strong> (পার্সোনাল) নম্বরে পাঠান। পাঠানোর পর নিচের ঘরে যে ভাইকে টাকা দিয়েছেন অথবা আপনার ট্রানজেকশন আইডি (TrxID) দিন।
                     </p>
                   </div>
-                  
+
                   <div className="relative group text-lg">
                     <label className="block text-amber-900 font-semibold mb-2 ml-1">ভাইয়ের নাম অথবা ট্রানজেকশন আইডি (TrxID)</label>
                     <div className="relative">
@@ -286,8 +317,8 @@ export default function RegisterPage() {
             <hr className="border-emerald-100" />
 
             {/* Submit Button */}
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={isSubmitting}
               className="w-full bg-linear-to-r from-emerald-800 to-emerald-600 hover:from-emerald-700 hover:to-emerald-500 text-white font-bold py-5 rounded-2xl transition-all shadow-lg shadow-emerald-900/20 hover:shadow-emerald-900/40 hover:-translate-y-0.5 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed disabled:transform-none text-xl font-sans"
             >

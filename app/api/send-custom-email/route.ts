@@ -1,10 +1,12 @@
 import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export async function POST(request: Request) {
   try {
-    // We now receive full user objects as 'recipients' instead of just an array of emails
-    const { recipients, subject, body } = await request.json();
+    // Added 'isPersonalized' to the incoming request
+    const { recipients, subject, body, isPersonalized } = await request.json();
 
     if (!recipients || recipients.length === 0) {
       return NextResponse.json({ success: false, error: 'No recipients provided' }, { status: 400 });
@@ -21,10 +23,32 @@ export async function POST(request: Request) {
       },
     });
 
-    // Loop through each recipient and send an individual, personalized email
-    const emailPromises = recipients.map((user: any) => {
+    // --- MODE 1: STANDARD BCC EMAIL (FAST) ---
+    if (!isPersonalized) {
+      const bccEmails = recipients.map((r: any) => r.email).filter(Boolean);
       
-      // Replace shortcodes dynamically!
+      const mailOptions = {
+        from: `"KUDC" <${process.env.EMAIL_USER}>`,
+        to: process.env.EMAIL_USER, // Send to self
+        bcc: bccEmails,             // BCC everyone else
+        subject: subject,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 10px;">
+            <h2 style="color: #065f46; text-align: center; border-bottom: 2px solid #ecfdf5; padding-bottom: 10px;">খুলনা বিশ্ববিদ্যালয় দ্বীনি কমিউনিটি </h2>
+            <div style="margin-top: 20px; color: #374151; line-height: 1.8; font-size: 16px;">
+              ${body.replace(/\n/g, '<br/>')}
+            </div>
+          </div>
+        `,
+      };
+
+      await transporter.sendMail(mailOptions);
+      return NextResponse.json({ success: true, message: `BCC email sent successfully to ${bccEmails.length} recipients.` });
+    }
+
+    // --- MODE 2: PERSONALIZED EMAIL LOOP (SLOW & SAFE) ---
+    let successCount = 0;
+    for (const user of recipients) {
       let personalizedBody = body;
       personalizedBody = personalizedBody.replace(/{{fullName}}/g, user.fullName || '');
       personalizedBody = personalizedBody.replace(/{{email}}/g, user.email || '');
@@ -36,7 +60,7 @@ export async function POST(request: Request) {
 
       const mailOptions = {
         from: `"নূর একাডেমি" <${process.env.EMAIL_USER}>`,
-        to: user.email, // Sending directly to the user (no BCC needed anymore)
+        to: user.email,
         subject: subject,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 10px;">
@@ -48,15 +72,22 @@ export async function POST(request: Request) {
         `,
       };
 
-      return transporter.sendMail(mailOptions);
+      try {
+        await transporter.sendMail(mailOptions);
+        successCount++;
+        await delay(2000); // 2-second delay to prevent spam flagging
+      } catch (err) {
+        console.error(`Failed to send email to ${user.email}:`, err);
+      }
+    }
+
+    return NextResponse.json({ 
+      success: true, 
+      message: `Successfully sent ${successCount} personalized emails.` 
     });
 
-    // Wait for all personalized emails to finish sending
-    await Promise.all(emailPromises);
-
-    return NextResponse.json({ success: true, message: 'Bulk personalized emails sent successfully' });
   } catch (error) {
-    console.error('Error sending bulk personalized email:', error);
-    return NextResponse.json({ success: false, error: 'Failed to send emails' }, { status: 500 });
+    console.error('Error in bulk email process:', error);
+    return NextResponse.json({ success: false, error: 'Failed to process emails' }, { status: 500 });
   }
 }

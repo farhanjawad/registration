@@ -1,10 +1,9 @@
-// app/admin/components/StaffPortal.tsx
 import { useState } from "react";
 import { collection, getDocs, query, updateDoc, doc, where } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { RegistrationData } from "../types";
 import { Loader2, Search, BookOpen, CheckCircle } from "lucide-react";
-
+import toast from "react-hot-toast";
 export default function StaffPortal() {
   const [searchCode, setSearchCode] = useState("");
   const [staffSearchResult, setStaffSearchResult] = useState<RegistrationData | null>(null);
@@ -18,7 +17,7 @@ export default function StaffPortal() {
       const q = query(collection(db, "registrations"), where("verificationCode", "==", searchCode));
       const querySnapshot = await getDocs(q);
       if (querySnapshot.empty) {
-        alert("এই কোড দিয়ে কোনো অনুমোদিত নিবন্ধন পাওয়া যায়নি!");
+        toast.error("এই কোড দিয়ে কোনো অনুমোদিত নিবন্ধন পাওয়া যায়নি!");
       } else {
         querySnapshot.forEach((doc) => setStaffSearchResult({ id: doc.id, ...doc.data() } as RegistrationData));
       }
@@ -34,7 +33,7 @@ export default function StaffPortal() {
     setSearchLoading(true);
     try {
       await updateDoc(doc(db, "registrations", staffSearchResult.id), { bookCollected: true });
-      alert("বই সফলভাবে হস্তান্তর করা হয়েছে!");
+      toast.success("বই সফলভাবে হস্তান্তর করা হয়েছে!");
       setStaffSearchResult({ ...staffSearchResult, bookCollected: true });
     } catch (error) {
       console.error(error);
@@ -50,7 +49,7 @@ export default function StaffPortal() {
         <form onSubmit={handleSearchCode} className="flex gap-4 mb-8">
           <input 
             type="text" value={searchCode} onChange={(e) => setSearchCode(e.target.value)} placeholder="উদাঃ 123456" required
-            className="flex-1 p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none text-xl text-center font-sans tracking-widest"
+            className="flex-1 text-black p-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-amber-500 outline-none text-xl text-center font-sans tracking-widest"
           />
           <button type="submit" disabled={searchLoading} className="bg-emerald-700 hover:bg-emerald-800 text-white px-8 rounded-xl font-bold flex items-center gap-2 transition-colors text-lg disabled:opacity-70">
             {searchLoading ? <Loader2 className="animate-spin" /> : <Search />} খুঁজুন
