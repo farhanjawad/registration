@@ -127,9 +127,33 @@ export default function RegisterPage() {
       });
 
       setSuccessData({ name: data.fullName, gender: data.gender });
-    } catch (error) {
+    } catch (error: any) {
+      // 1. Log to the local console (for Vercel/Local dev)
       console.error("Error submitting form:", error);
-      alert("সাবমিট করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।");
+      
+      // 2. Show the user a friendly error
+      toast.error("সাবমিট করতে সমস্যা হয়েছে। অনুগ্রহ করে আবার চেষ্টা করুন।");
+
+      // 3. SILENTLY LOG TO FIREBASE FOR LONG-TERM DEBUGGING
+      try {
+        await addDoc(collection(db, "error_logs"), {
+          type: "registration_error",
+          errorMessage: error?.message || "Unknown error occurred",
+          errorStack: error?.stack || "No stack trace available",
+          // Saving a snippet of what they tried to submit to help you reproduce the bug
+          attemptedData: {
+            email: data?.email || "N/A",
+            phone: data?.phone || "N/A",
+            buyBook: data?.buyBook || "N/A"
+          },
+          userAgent: typeof navigator !== 'undefined' ? navigator.userAgent : "Unknown Device",
+          createdAt: serverTimestamp(),
+        });
+      } catch (logError) {
+        // If the error logger itself fails, just print it locally so it doesn't crash the app
+        console.error("Failed to save error log to Firebase:", logError);
+      }
+      
     } finally {
       setIsSubmitting(false);
     }
@@ -322,7 +346,7 @@ export default function RegisterPage() {
                 <div className="bg-white p-6 rounded-2xl border border-amber-200 shadow-sm animate-in fade-in slide-in-from-top-4">
                   <div className="flex items-start gap-4 mb-4">
                     <div className="bg-amber-100 p-2 rounded-lg text-amber-700 mt-1"><CreditCard size={20} /></div>
-                    <p className="text-lg text-amber-800 leading-relaxed">
+                    <p className="text-lg text-amber-800 leading-relaxed overflow-auto">  
                       অনুগ্রহ করে <strong>১০০ টাকা</strong> আমাদের প্রতিনিধি ভাই অথবা বিকাশ বা নগদে <strong className="bg-amber-100 px-2 py-0.5 rounded font-sans">01744302744</strong> (পার্সোনাল) নম্বরে পাঠান। পাঠানোর পর নিচের ঘরে যে ভাইকে টাকা দিয়েছেন অথবা আপনার ট্রানজেকশন আইডি (TrxID) দিন।
                     </p>
                   </div>

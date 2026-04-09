@@ -9,11 +9,12 @@ import { ADMIN_EMAILS, RegistrationData } from "./types";
 import StaffPortal from "./components/StaffPortal";
 import DataTable from "./components/DataTable";
 import CustomMailer from "./components/CustomMailer";
+import SupportTickets from "./components/SupportTickets";
 
 export default function AdminDashboardWrapper() {
   const [user, setUser] = useState<User | null>(null);
   const [loadingAuth, setLoadingAuth] = useState(true);
-  
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState("");
@@ -21,16 +22,15 @@ export default function AdminDashboardWrapper() {
 
   const [data, setData] = useState<RegistrationData[]>([]);
   const [loadingData, setLoadingData] = useState(false);
-  
-  // Added 'verification' to the available tabs
-  const [activeTab, setActiveTab] = useState<'dashboard' | 'mailer' | 'verification'>('dashboard');
 
+  // Added 'verification' to the available tabs
+  const [activeTab, setActiveTab] = useState<'dashboard' | 'mailer' | 'verification' | 'support'>('dashboard');
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       setLoadingAuth(false);
       if (currentUser && ADMIN_EMAILS.includes(currentUser.email || "")) {
-        fetchData(); 
+        fetchData();
       }
     });
     return () => unsubscribe();
@@ -125,23 +125,29 @@ export default function AdminDashboardWrapper() {
 
       {/* Admin Tab Navigation */}
       <div className="bg-white border-b border-gray-200 shadow-sm px-8 pt-4 flex gap-8 overflow-x-auto">
-        <button 
+        <button
           onClick={() => setActiveTab('dashboard')}
           className={`flex items-center gap-2 pb-4 px-2 text-lg font-bold border-b-4 transition-all whitespace-nowrap ${activeTab === 'dashboard' ? 'border-emerald-600 text-emerald-700' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
           <LayoutDashboard size={20} /> ডেটা ড্যাশবোর্ড
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('mailer')}
           className={`flex items-center gap-2 pb-4 px-2 text-lg font-bold border-b-4 transition-all whitespace-nowrap ${activeTab === 'mailer' ? 'border-amber-500 text-amber-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
           <Mail size={20} /> কাস্টম মেইল
         </button>
-        <button 
+        <button
           onClick={() => setActiveTab('verification')}
           className={`flex items-center gap-2 pb-4 px-2 text-lg font-bold border-b-4 transition-all whitespace-nowrap ${activeTab === 'verification' ? 'border-blue-500 text-blue-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
         >
           <UserCheck size={20} /> বই বিতরণ ও যাচাই
+        </button>
+        <button
+          onClick={() => setActiveTab('support')}
+          className={`flex items-center gap-2 pb-4 px-2 text-lg font-bold border-b-4 transition-all whitespace-nowrap ${activeTab === 'support' ? 'border-indigo-500 text-indigo-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+        >
+          <Mail size={20} /> সাপোর্ট ইনবক্স
         </button>
       </div>
 
@@ -149,7 +155,7 @@ export default function AdminDashboardWrapper() {
         {/* Render the appropriate component based on the active tab */}
         {activeTab === 'dashboard' && <DataTable data={data} loadingData={loadingData} refreshData={fetchData} />}
         {activeTab === 'mailer' && <CustomMailer data={data} />}
-        
+        {activeTab === 'support' && <SupportTickets />}
         {/* Reusing the StaffPortal component for the Admin! */}
         {activeTab === 'verification' && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">

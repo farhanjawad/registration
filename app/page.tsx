@@ -11,18 +11,7 @@ const toBengaliNumber = (num: number | string) => {
 export default function LandingPage() {
   return (
     <div className="min-h-screen bg-[#fdfbf7] font-kalpurush selection:bg-emerald-200">
-      {/* Navbar */}
-      <nav className="sticky top-0 z-50 bg-[#fdfbf7]/90 backdrop-blur-md border-b border-emerald-100 px-6 py-4 flex justify-between items-center shadow-sm">
-        <div className="text-2xl font-bold text-emerald-900 flex items-center gap-2">
-          <span>খুলনা বিশ্ববিদ্যালয় দ্বীনি কমিউনিটি</span>
-        </div>
-        <Link
-          href="/register"
-          className="bg-emerald-800 hover:bg-emerald-700 text-white px-6 py-2 rounded-full font-medium transition-all shadow-md font-sans"
-        >
-          নিবন্ধন করুন
-        </Link>
-      </nav>
+      
 
       {/* Hero Section */}
       <section className="relative bg-emerald-900 text-white overflow-hidden py-20 px-6 lg:px-20">
@@ -143,11 +132,7 @@ export default function LandingPage() {
           })}
         </div>
       </section>
-    
-     {/* Footer */}
-      <footer className="w-full text-center py-8 text-slate-500 text-sm">
-        <p>© {new Date().getFullYear()} KUDC Exam Management System. Dedicated to Preserving Knowledge.</p>
-      </footer>
+  
     </div>
 
   );
