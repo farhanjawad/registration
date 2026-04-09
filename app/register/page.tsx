@@ -64,12 +64,39 @@ export default function RegisterPage() {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
+
+      if (data.phone && !/^\d{11}$/.test(data.phone)) {
+        toast.error("সঠিক ফোন নম্বর প্রদান করুন (১১ ডিজিট)।");
+        setIsSubmitting(false);
+        return;
+      }
+      // Check if user is a student but left the student ID blank (or just typed spaces)
+      if (data.userType === "শিক্ষার্থী" && (!data.studentId || data.studentId.trim() === "")) {
+        toast.error("শিক্ষার্থীদের জন্য স্টুডেন্ট আইডি প্রদান করা বাধ্যতামূলক।");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Check if user is a teacher/staff but left the designation blank
+      if (data.userType !== "শিক্ষার্থী" && (!data.designation || data.designation.trim() === "")) {
+        toast.error("শিক্ষক/কর্মকর্তাদের জন্য পদবি প্রদান করা বাধ্যতামূলক।");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Check if user wants to buy the book but left the TrxID blank
+      if (data.buyBook === "হ্যাঁ" && (!data.trxId || data.trxId.trim() === "")) {
+        toast.error("বইয়ের পেমেন্ট নিশ্চিত করতে ট্রানজেকশন আইডি (TrxID) বাধ্যতামূলক।");
+        setIsSubmitting(false);
+        return;
+      }
+
       const registrationsRef = collection(db, "registrations");
 
       const emailQuery = query(registrationsRef, where("email", "==", data.email));
       const emailSnapshot = await getDocs(emailQuery);
       if (!emailSnapshot.empty) {
-        toast.error("এই ইমেইল ঠিকানা দিয়ে ইতোমধ্যে একটি নিবন্ধন করা হয়েছে। (This email is already registered.)");
+        toast.error("এই ইমেইল ঠিকানা দিয়ে ইতোমধ্যে একটি নিবন্ধন করা হয়েছে।");
         setIsSubmitting(false);
         return; // Stop the process
       }
@@ -78,7 +105,7 @@ export default function RegisterPage() {
       const StudentIDQuery = query(registrationsRef, where("studentId", "==", data.studentId));
       const studentIdSnapshot = await getDocs(StudentIDQuery);
       if (!studentIdSnapshot.empty) {
-       toast.error("এই শিক্ষার্থী আইডি দিয়ে ইতোমধ্যে একটি নিবন্ধন করা হয়েছে। (This student ID is already registered.)");
+       toast.error("এই শিক্ষার্থী আইডি দিয়ে ইতোমধ্যে একটি নিবন্ধন করা হয়েছে। ");
         setIsSubmitting(false);
         return; // Stop the process
       }
