@@ -93,33 +93,6 @@ export default function RegisterPage() {
 
       const registrationsRef = collection(db, "registrations");
 
-      const emailQuery = query(registrationsRef, where("email", "==", data.email));
-      const emailSnapshot = await getDocs(emailQuery);
-      if (!emailSnapshot.empty) {
-        toast.error("এই ইমেইল ঠিকানা দিয়ে ইতোমধ্যে একটি নিবন্ধন করা হয়েছে।");
-        setIsSubmitting(false);
-        return; // Stop the process
-      }
-
-      // 2. Check if Student ID already exists
-      const StudentIDQuery = query(registrationsRef, where("studentId", "==", data.studentId));
-      const studentIdSnapshot = await getDocs(StudentIDQuery);
-      if (!studentIdSnapshot.empty) {
-       toast.error("এই শিক্ষার্থী আইডি দিয়ে ইতোমধ্যে একটি নিবন্ধন করা হয়েছে। ");
-        setIsSubmitting(false);
-        return; // Stop the process
-      }
-
-      if (data.buyBook === "হ্যাঁ" && data.trxId) {
-        const trxQuery = query(registrationsRef, where("trxId", "==", data.trxId));
-        const trxSnapshot = await getDocs(trxQuery);
-        if (!trxSnapshot.empty) {
-         toast.error("এই ট্রানজেকশন আইডি (TrxID) ইতোমধ্যে ব্যবহৃত হয়েছে! (This TrxID has already been used.)");
-          setIsSubmitting(false);
-          return; // Stop the process
-        }
-      }
-
       await addDoc(registrationsRef, {
         ...data,
         status: "pending",
