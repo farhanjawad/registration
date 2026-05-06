@@ -18,7 +18,7 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
         
         <div className="text-2xl font-bold text-emerald-900 flex items-center gap-2">
-          <span>খুলনা বিশ্ববিদ্যালয় দ্বীনি কমিউনিটি</span>
+          <span>খুলনা বিশ্ববিদ্যালয় সীরাত প্রতিযোগিতা<span>
         </div>
 
         {/* Desktop Navigation */}
