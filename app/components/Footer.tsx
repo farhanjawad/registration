@@ -14,7 +14,7 @@ export default function Footer() {
           <div className="space-y-4">
             <div className="flex items-center gap-2 text-2xl font-bold text-white">
               <BookOpen className="text-amber-500" />
-              <span>খুলনা বিশ্ববিদ্যালয় দ্বীনি কমিউনিটি</span>
+              <span>খুলনা বিশ্ববিদ্যালয় সীরাত অলিম্পিয়াড</span>
             </div>
             <p className="text-emerald-200/80 text-lg max-w-sm leading-relaxed">
               নবী মুহাম্মদ (সাঃ) এর বরকতময় জীবনের উপর বিস্তর অধ্যয়ন। আমাদের লক্ষ্য হলো সিরাত চর্চাকে সবার মাঝে ছড়িয়ে দেওয়া।
