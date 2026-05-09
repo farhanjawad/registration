@@ -4,6 +4,7 @@ import { updateDoc, doc } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import { RegistrationData, toBengaliNumber } from "../types";
 import { Loader2, ArrowUpDown, Download, CheckCircle, Users, Clock, Filter } from "lucide-react";
+import toast from "react-hot-toast";
 
 interface DataTableProps {
   data: RegistrationData[];
@@ -63,16 +64,16 @@ export default function DataTable({ data, loadingData, refreshData }: DataTableP
         verificationCode: code,
         bookCollected: false
       });
-      await fetch('/api/send-email', {
+      await fetch('/api/verification', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: row.email, name: row.fullName, code: code }),
       });
-      alert("পেমেন্ট অনুমোদিত হয়েছে এবং ইমেইলে কোড পাঠানো হয়েছে!");
+      toast.success("পেমেন্ট অনুমোদিত হয়েছে এবং ইমেইলে কোড পাঠানো হয়েছে!");
       refreshData(); 
     } catch (error) {
       console.error(error);
-      alert("কোনো সমস্যা হয়েছে, আবার চেষ্টা করুন।");
+      toast.error("কোনো সমস্যা হয়েছে, আবার চেষ্টা করুন।");
     } finally {
       setActionLoading(null);
     }

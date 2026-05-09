@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import Link from "next/link";
-
+import { X } from "lucide-react";
 const DISCIPLINES = [
   'Architecture', 'Computer Science and Engineering', 'Electronics and Communication Engineering',
   'Urban and Rural Planning', 'Mathematics', 'Physics', 'Chemistry', 'Statistics',
@@ -57,7 +57,7 @@ export default function RegisterPage() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
-
+const [showPaymentModal, setShowPaymentModal] = useState(false);
   const userType = watch("userType");
   const buyBook = watch("buyBook");
 
@@ -304,7 +304,14 @@ export default function RegisterPage() {
 
               <div className="space-y-3 mb-6 text-lg">
                 <label className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all ${buyBook === 'হ্যাঁ' ? 'bg-white border-amber-400 shadow-md ring-1 ring-amber-400' : 'bg-white/50 border-amber-200 hover:bg-white'}`}>
-                  <input type="radio" value="হ্যাঁ" {...register("buyBook")} className="w-5 h-5 text-amber-600 focus:ring-amber-500 border-amber-300" />
+                  <input type="radio" value="হ্যাঁ" {...register("buyBook",{
+                      onChange: (e) => {
+                        if (e.target.value === 'হ্যাঁ') {
+                          setShowPaymentModal(true);
+                        }
+                      }
+                    }
+                  )} className="w-5 h-5 text-amber-600 focus:ring-amber-500 border-amber-300" />
                   <span className="ml-3 text-amber-900 font-medium">হ্যাঁ, আমি বইটি নিতে চাই</span>
                 </label>
                 <label className={`flex items-center p-4 border rounded-xl cursor-pointer transition-all ${buyBook === 'না' ? 'bg-white border-gray-400 shadow-md ring-1 ring-gray-400' : 'bg-white/50 border-amber-200 hover:bg-white'}`}>
@@ -320,7 +327,7 @@ export default function RegisterPage() {
                   <div className="flex items-start gap-4 mb-4">
                     <div className="bg-amber-100 p-2 rounded-lg text-amber-700 mt-1"><CreditCard size={20} /></div>
                     <p className="text-lg text-amber-800 leading-relaxed overflow-auto">  
-                      অনুগ্রহ করে <strong>১০০ টাকা</strong> আমাদের প্রতিনিধি ভাই অথবা বিকাশ বা নগদে <strong className="bg-amber-100 px-2 py-0.5 rounded font-sans">01744302744</strong> (পার্সোনাল) নম্বরে পাঠান। পাঠানোর পর নিচের ঘরে যে ভাইকে টাকা দিয়েছেন অথবা আপনার ট্রানজেকশন আইডি (TrxID) দিন।
+                      অনুগ্রহ করে <strong>১০০ টাকা</strong> আমাদের প্রতিনিধি ভাই অথবা বিকাশ বা নগদে <strong className="bg-amber-100 px-2 py-0.5 rounded font-sans">01953357328</strong> (পার্সোনাল) নম্বরে পাঠান। পাঠানোর পর নিচের ঘরে যে ভাইকে টাকা দিয়েছেন অথবা আপনার ট্রানজেকশন আইডি (TrxID) দিন।
                     </p>
                   </div>
 
@@ -358,6 +365,53 @@ export default function RegisterPage() {
           </form>
         </div>
       </div>
+
+      {/* ========================================== */}
+      {/* PAYMENT INSTRUCTION MODAL */}
+      {/* ========================================== */}
+      {showPaymentModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-in fade-in duration-300 font-kalpurush">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in zoom-in-95 duration-300 relative border border-emerald-100">
+            
+            {/* Close Button (Top Right) */}
+            <button 
+              onClick={() => setShowPaymentModal(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-red-500 transition-colors"
+            >
+              <X size={24} />
+            </button>
+
+            <h3 className="text-2xl font-bold text-emerald-900 mb-2">পেমেন্ট নির্দেশনা</h3>
+            <p className="text-gray-600 text-lg mb-6 leading-relaxed">
+              বইটি সংগ্রহ করতে আপনাকে নিচের যেকোনো একটি নম্বরে <strong className="text-emerald-700">১০০ টাকা</strong> (Send Money) করতে হবে:
+            </p>
+
+            {/* Payment Numbers Box */}
+            <div className="bg-emerald-50 border border-emerald-200 p-4 rounded-xl space-y-3 mb-6 text-lg">
+              <div className="flex justify-between items-center border-b border-emerald-100 pb-2">
+                <span className="font-bold text-emerald-900">বিকাশ (Personal):</span>
+                <span className="font-sans font-bold text-emerald-700 tracking-wider">01953357328</span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="font-bold text-emerald-900">নগদ (Personal):</span>
+                <span className="font-sans font-bold text-emerald-700 tracking-wider">01953357328</span>
+              </div>
+            </div>
+
+            {/* Warning / Tip */}
+            <div className="text-amber-800 font-bold bg-amber-50 border border-amber-200 p-3 rounded-lg mb-6 leading-relaxed">
+              <strong>জরুরী:</strong> পেমেন্ট করতে পূর্বে যে নাম্বার ব্যবহার করা হয়েছে সেটি এখন আর ব্যবহার করা হচ্ছে না। <strong>আপনি যদি আগের নাম্বার এ পেমেন্ট করে থাকেন</strong> তাহলে আমাদের সাথে যোগাযোগ করুন। 
+            </div>
+
+            <button
+              onClick={() => setShowPaymentModal(false)}
+              className="w-full bg-emerald-800 hover:bg-emerald-700 text-white font-bold py-3 rounded-xl transition-all shadow-md text-lg"
+            >
+              আমি বুঝতে পেরেছি
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
