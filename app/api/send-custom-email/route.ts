@@ -34,7 +34,7 @@ export async function POST(request: Request) {
         subject: subject,
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #e5e7eb; border-radius: 10px;">
-            <h2 style="color: #065f46; text-align: center; border-bottom: 2px solid #ecfdf5; padding-bottom: 10px;">খুলনা বিশ্ববিদ্যালয় দ্বীনি কমিউনিটি </h2>
+            <h2 style="color: #065f46; text-align: center; border-bottom: 2px solid #ecfdf5; padding-bottom: 10px;">খুলনা বিশ্ববিদ্যালয় সিরাত অলিম্পিয়াড </h2>
             <div style="margin-top: 20px; color: #374151; line-height: 1.8; font-size: 16px;">
               ${body.replace(/\n/g, '<br/>')}
             </div>
